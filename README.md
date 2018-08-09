@@ -32,3 +32,22 @@ spring-boot-starter-jetty|   使用 Jetty 而不是默认的 Tomcat 作为应用
 spring-boot-starter-log4j|   添加 Log4j 的支持。
 spring-boot-starter-logging| 使用 Spring Boot 默认的日志框架 Logback。
 spring-boot-starter-tomcat|  使用 Spring Boot 默认的 Tomcat 作为应用服务器。
+
+## spring-boot-starter-data-elasticsearch 
+
+es-demo 全文搜索引擎demo
+
+---
+
+1. mac本地安装elasticsearch 
+
+`brew install elasticsearch` 默认是6.2.4
+
+- Index/type/document 对应 mysql database/table/row
+- 安装中文分词插件(必须下载对应的es版本) `elasticsearch-plugin install https://github.com/medcl/elasticsearch-analysis-ik/releases/download/v6.2.4/elasticsearch-analysis-ik-6.2.4.zip`
+
+2. [安装elasticsearch监控](https://www.cnblogs.com/zklidd/p/6433123.html) 
+
+3. 资源链接
+
+- [中文社区](https://elasticsearch.cn)
