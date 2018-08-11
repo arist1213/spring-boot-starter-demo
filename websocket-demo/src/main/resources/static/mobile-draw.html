@@ -1,0 +1,124 @@
+<!doctype html>
+<html><head>
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+
+    <style>
+        #cnvs {
+            border: none;
+            -moz-border-radius: 4px;
+            cursor: url(pencil.cur),crosshair;
+            position: absolute;
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+        }
+        #cnvs:active {
+            cursor: url(pencil.cur),crosshair;
+        }
+        body {
+            overflow: hidden;
+        }
+    </style>
+    <title>Drawing</title>
+</head><body lang="en">
+<h1>Draw</h1>
+<canvas id="cnvs"></canvas>
+<script>
+    var send; var draw;
+    send = draw = function(){};
+
+    var lines = [];
+
+    var canvas = document.getElementById('cnvs');
+
+    if (canvas.getContext) {
+        var ctx = canvas.getContext('2d');
+
+        draw = function(p) {
+            ctx.beginPath();
+            ctx.moveTo(p.x1, p.y1);
+            ctx.lineTo(p.x2, p.y2);
+            ctx.stroke();
+        };
+
+        var do_resize = function() {
+            canvas.width  = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            $.map(lines, function (p) {
+                draw(p);
+            });
+        };
+
+        $(window).resize(do_resize);
+        $(do_resize);
+
+        var pos = $('#cnvs').position();
+        var prev = null;
+
+        /* 移动端适配 */
+        $('#cnvs').bind('touchstart', function (evt) {
+            evt.preventDefault();
+            evt.stopPropagation();
+
+            $('#cnvs').bind('touchmove', function (e) {
+
+                var curr = {x:e.touches[0].clientX-pos.left, y:e.touches[0].clientY-pos.top};
+                if (!prev) {
+                    prev = curr;
+                    return;
+                }
+                if (Math.sqrt(Math.pow(prev.x - curr.x, 2) +
+                        Math.pow(prev.y - curr.y, 2)) > 3) {
+                    var p = {x1:prev.x, y1:prev.y, x2:curr.x, y2:curr.y}
+                    lines.push(p);
+                    draw(p);
+                    send(JSON.stringify(p));
+                    prev = curr;
+                }
+            })
+        });
+
+        $('html').bind('touchend click', function() {
+            prev = null;
+            $('#cnvs').unbind('touchmove');
+        });
+
+    }
+    else {
+        document.write("Sorry - this demo requires a browser with canvas tag support.");
+    }
+
+    // Stomp.js boilerplate
+    var ws = new SockJS('/ws');
+    var client = Stomp.over(ws);
+
+    client.debug = function() {
+        if (window.console && console.log && console.log.apply) {
+            console.log.apply(console, arguments);
+        }
+    };
+
+    send = function(data) {
+        client.send('/app/draw.bunny', {}, data);
+    };
+
+    var on_connect = function(x) {
+        id = client.subscribe('/topic/bunny', function(d) {
+            var p = JSON.parse(d.body);
+            lines.push(p);
+            draw(p, true);
+        });
+    };
+    var on_error = function() {
+        console.log('error');
+    };
+    client.connect({}, on_connect, on_error);
+
+</script>
+</body></html>

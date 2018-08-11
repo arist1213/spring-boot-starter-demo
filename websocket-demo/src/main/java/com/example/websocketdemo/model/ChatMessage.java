@@ -1,4 +1,4 @@
-package com.example.websocketdemo;
+package com.example.websocketdemo.model;
 
 /**
  * created by yanming on 2018/8/10

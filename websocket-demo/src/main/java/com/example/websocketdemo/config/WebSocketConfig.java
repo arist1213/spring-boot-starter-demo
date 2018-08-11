@@ -1,4 +1,4 @@
-package com.example.websocketdemo;
+package com.example.websocketdemo.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,17 +19,12 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     private final static Logger log = LoggerFactory.getLogger(WebSocketConfig.class);
 
     @Override
-    public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.setApplicationDestinationPrefixes("/app");
-        config.enableSimpleBroker("/topic");
-
-        // Use this for enabling a Full featured broker like RabbitMQ
-//        config.enableStompBrokerRelay("/topic")
-//                .setRelayHost("localhost")
-//                .setRelayPort(61613)
-//                .setClientLogin("guest")
-//                .setClientPasscode("guest");
-
+    public void configureMessageBroker(MessageBrokerRegistry registry) {
+        registry.setApplicationDestinationPrefixes("/app");
+        // 使用内存作为消息管理
+        // config.enableSimpleBroker("/topic");
+        // 使用rabbit-mq 作为 message-broker
+        registry.enableStompBrokerRelay("/topic", "/queue");
         log.info("set message broker topic");
     }
 
