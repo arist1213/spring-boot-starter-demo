@@ -73,8 +73,7 @@
                     prev = curr;
                     return;
                 }
-                if (Math.sqrt(Math.pow(prev.x - curr.x, 2) +
-                        Math.pow(prev.y - curr.y, 2)) > 3) {
+                if (Math.sqrt(Math.pow(prev.x - curr.x, 2) + Math.pow(prev.y - curr.y, 2)) > 5) {
                     var p = {x1:prev.x, y1:prev.y, x2:curr.x, y2:curr.y}
                     lines.push(p);
                     draw(p);
