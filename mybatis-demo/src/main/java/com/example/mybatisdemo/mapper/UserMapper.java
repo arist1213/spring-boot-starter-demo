@@ -1,7 +1,7 @@
 package com.example.mybatisdemo.mapper;
 
 import com.example.mybatisdemo.core.CoreMapper;
-import com.example.mybatisdemo.entity.User;
+import com.example.mybatisdemo.model.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

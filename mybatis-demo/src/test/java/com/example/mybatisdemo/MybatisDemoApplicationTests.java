@@ -1,6 +1,6 @@
 package com.example.mybatisdemo;
 
-import com.example.mybatisdemo.entity.User;
+import com.example.mybatisdemo.model.User;
 import com.example.mybatisdemo.mapper.UserMapper;
 import com.example.mybatisdemo.service.UserService;
 import com.github.pagehelper.PageHelper;

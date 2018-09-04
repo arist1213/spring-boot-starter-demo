@@ -1,7 +1,7 @@
 package com.example.mybatisdemo.service.impl;
 
 import com.example.mybatisdemo.core.AbstractService;
-import com.example.mybatisdemo.entity.User;
+import com.example.mybatisdemo.model.User;
 import com.example.mybatisdemo.mapper.UserMapper;
 import com.example.mybatisdemo.service.UserService;
 import org.springframework.stereotype.Service;
